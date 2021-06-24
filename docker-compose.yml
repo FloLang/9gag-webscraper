@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  scraper:
+    container_name: scraper
+    build: .
+    depends_on:
+      - firefox
+    volumes:
+      - "./posts:/usr/src/app/posts"
+    networks:
+      - scrapernet
+  firefox:
+    container_name: firefox
+    image:  selenium/standalone-firefox
+    networks:
+      - scrapernet
+  mysql:
+    image: mysql
+    networks:
+      - scrapernet
+networks:
+  scrapernet:
+    driver: bridge

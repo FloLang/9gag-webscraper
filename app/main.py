@@ -4,9 +4,14 @@ from Post import Post
 if __name__ == "__main__":
     mainpageScraper = MainpageScraper()
 
-    posts = mainpageScraper.scrape()
+    postGenerator = mainpageScraper.scrollMainpage()
 
-    Post.storePosts("posts/", posts)
+    try:
+        # Get 15 posts
+        for x in range(15):
+            post = next(postGenerator)
+            print(post)
 
-    # TODO save to mysql
-    # TODO report how many new posts saved in mysql
+            # TODO multiprocessing when persisting posts to db (to utilize timeout time while scraping)
+    except StopIteration:
+        print("stopped iteration")

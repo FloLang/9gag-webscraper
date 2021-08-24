@@ -5,8 +5,11 @@ services:
     build: .
     depends_on:
       - firefox
+      - mysql
     volumes:
       - "./posts:/usr/src/app/posts"
+    environment:
+      log: DEBUG
     networks:
       - scrapernet
   firefox:
@@ -15,9 +18,18 @@ services:
     networks:
       - scrapernet
   mysql:
+    container_name: mysql
     image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: test
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
     networks:
       - scrapernet
 networks:
   scrapernet:
+    name: scrapernet
     driver: bridge
